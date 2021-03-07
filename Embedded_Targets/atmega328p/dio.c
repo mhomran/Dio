@@ -225,10 +225,10 @@ Dio_SetChannelDirection(DioChannel_t Channel, DioDirection_t Direction)
 void 
 Dio_RegisterWrite(uint8_t volatile * const Address, uint8_t Value)
 {
-  if(!(DIO_LOWER_BOUND_ADDRESS <= Address && Address <= DIO_UPPER_BOUND_ADDRESS)) 
+  if(!((uint8_t *)DIO_LOWER_BOUND_ADDRESS <= Address
+      && Address <= (uint8_t *)DIO_UPPER_BOUND_ADDRESS))
     {
       //TODO: implement your error handling method
-      return 0x0;
     }
   *Address = Value;
 }
@@ -255,7 +255,8 @@ Dio_RegisterWrite(uint8_t volatile * const Address, uint8_t Value)
 const volatile uint8_t 
 Dio_RegisterRead(const volatile uint8_t * const Address)
 {
-  if(!(DIO_LOWER_BOUND_ADDRESS <= Address && Address <= DIO_UPPER_BOUND_ADDRESS)) 
+  if(!((uint8_t *)DIO_LOWER_BOUND_ADDRESS <= Address
+      && Address <= (uint8_t *)DIO_UPPER_BOUND_ADDRESS))
     {
       //TODO: implement your error handling method
       return 0x0;
