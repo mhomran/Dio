@@ -78,11 +78,11 @@ Dio_Init(const DioConfig_t * Config)
       PortNumber = Config[Channel].Channel / DIO_CHANNELS_PER_PORT;
       Position = Config[Channel].Channel % DIO_CHANNELS_PER_PORT;
 
-      if(Config[Channel].Direction == OUTPUT)
+      if(Config[Channel].Direction == DIO_DIR_OUTPUT)
         {
           *Dio_PortsDir[PortNumber] |= 1UL << Position;
 
-          if(Config[Channel].Data == HIGH)
+          if(Config[Channel].Data == DIO_STATE_HIGH)
             {
               *Dio_PortsOut[PortNumber] |= (1UL << Position);
             }
@@ -120,11 +120,11 @@ DioState_t
 Dio_ChannelRead(DioChannel_t Channel)
 {
   /* Read the port associated with the desired pin */
-  DioState_trtState = (DioDioState_tPortsIn[Channel / DIO_CHANNELS_PER_PORT];
+  DioState_t PortState = (DioState_t)*Dio_PortsIn[Channel / DIO_CHANNELS_PER_PORT];
   /* Determine the port bit associated with this channel */
-  DioState_tnMask = (DioDioState_t<< (Channel % DIO_CHANNELS_PER_PORT));
+  DioState_t PinMask = (DioState_t)(1UL << (Channel % DIO_CHANNELS_PER_PORT));
   /* Mask the port state with the pin and return the DioPinState */
-  return ((PortState & PinMask) ? HIGH : LOW);
+  return ((PortState & PinMask) ? DIO_STATE_HIGH : DIO_STATE_LOW);
 }
 
 /**********************************************************************
@@ -150,7 +150,7 @@ Dio_ChannelRead(DioChannel_t Channel)
 * @see Dio_Init
 **********************************************************************/
 void 
-Dio_ChannelWrite(DioChannel_t Channel, DioState_tate)
+Dio_ChannelWrite(DioChannel_t Channel, DioState_t State)
 {
   if (State == DIO_STATE_HIGH)
     {
@@ -183,7 +183,7 @@ Dio_SetChannelDirection(DioChannel_t Channel, DioDirection_t Direction)
 {
   uint16_t PortNumber = Channel / DIO_CHANNELS_PER_PORT;
   uint16_t Position = Channel % DIO_CHANNELS_PER_PORT;
-  if(Direction == OUTPUT)
+  if(Direction == DIO_DIR_OUTPUT)
     {
       *Dio_PortsDir[PortNumber] |= (1UL << Position);
     }

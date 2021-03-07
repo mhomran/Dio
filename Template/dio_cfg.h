@@ -50,8 +50,8 @@ typedef enum
 typedef enum
 {
 	/* TODO: Populate this list based on available MCU pins */
-	PORTB_0,
-	PORTB_1,
+	PORTA_0,
+	PORTA_1,
 	DIO_CHANNEL_MAX
 }DioChannel_t;
 
@@ -63,7 +63,7 @@ typedef struct
 {
 	DioChannel_t Channel; /**< The I/O pin */
 	DioDirection_t Direction; /**< OUTPUT or INPUT */
-	Diote_t Data; /**< HIGH or LOW */
+	DioState_t Data; /**< HIGH or LOW */
 }DioConfig_t;
 
 /**********************************************************************
