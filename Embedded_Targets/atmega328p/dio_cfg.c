@@ -1,5 +1,5 @@
 /** 
- * @file Dio_Cfg.c
+ * @file dio_cfg.c
  * @author Mohamed Hassanin
  * @brief This module contains the implementation for the digital
  * input/output peripheral configuration

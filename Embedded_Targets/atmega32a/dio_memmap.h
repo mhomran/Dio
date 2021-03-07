@@ -1,5 +1,5 @@
-#ifndef _DIO_MEMMAP_H
-#define _DIO_MEMMAP_H
+#ifndef DIO_MEMMAP_H
+#define DIO_MEMMAP_H
 
 #define DIO_UPPER_BOUND_ADDRESS 0x003B
 #define PORTA	0x003B

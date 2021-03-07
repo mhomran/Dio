@@ -50,7 +50,6 @@ typedef enum
 */
 typedef enum
 {
-	/* TODO: Populate this list based on available MCU pins */
   PORTA_0,
   PORTA_1,
   PORTA_2,

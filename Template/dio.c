@@ -67,7 +67,6 @@ static volatile TYPE* const Dio_PortsOut[DIO_NUMBER_OF_PORTS] =
 void 
 Dio_Init(const DioConfig_t * Config)
 {
-/* TODO: Define implementation */
   uint16_t PortNumber = 0; // Port Number
   uint16_t Position = 0; // Pin Number
 
