@@ -39,7 +39,8 @@ typedef enum
 typedef enum 
 {
 	DIO_DIR_INPUT, 
-	DIO_DIR_OUTPUT
+	DIO_DIR_OUTPUT,
+	DIO_DIR_MAX,
 }DioDirection_t;
 
 /**
@@ -50,8 +51,38 @@ typedef enum
 typedef enum
 {
 	/* TODO: Populate this list based on available MCU pins */
-	PORTB_0,
-	PORTB_1,
+  PORTA_0,
+  PORTA_1,
+  PORTA_2,
+  PORTA_3,
+  PORTA_4,
+  PORTA_5,
+  PORTA_6,
+  PORTA_7,
+  PORTB_0,
+  PORTB_1,
+  PORTB_2,
+  PORTB_3,
+  PORTB_4,
+  PORTB_5,
+  PORTB_6,
+  PORTB_7,
+  PORTC_0,
+  PORTC_1,
+  PORTC_2,
+  PORTC_3,
+  PORTC_4,
+  PORTC_5,
+  PORTC_6,
+  PORTC_7,
+  PORTD_0,
+  PORTD_1,
+  PORTD_2,
+  PORTD_3,
+  PORTD_4,
+  PORTD_5,
+  PORTD_6,
+  PORTD_7,
 	DIO_CHANNEL_MAX
 }DioChannel_t;
 
@@ -63,7 +94,7 @@ typedef struct
 {
 	DioChannel_t Channel; /**< The I/O pin */
 	DioDirection_t Direction; /**< OUTPUT or INPUT */
-	Diote_t Data; /**< HIGH or LOW */
+	DioState_t Data; /**< HIGH or LOW */
 }DioConfig_t;
 
 /**********************************************************************

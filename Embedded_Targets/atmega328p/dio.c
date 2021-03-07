@@ -18,26 +18,35 @@
 * Defines a table of pointers to the peripheral input register on the
 * microcontroller.
 */
-static const volatile TYPE* const Dio_PortsIn[DIO_NUMBER_OF_PORTS] =
+static const volatile uint8_t * const Dio_PortsIn[DIO_NUMBER_OF_PORTS] =
 { 
-  (const volatile TYPE*)PINB,
+  (volatile uint8_t*)PINA,
+  (volatile uint8_t*)PINB,
+  (volatile uint8_t*)PINC,
+  (volatile uint8_t*)PIND
 };
 /**
 * Defines a table of pointers to the peripheral data direction register
 on
 * the microcontroller.
 */
-static volatile TYPE* const Dio_PortsDir[DIO_NUMBER_OF_PORTS] =
+static uint8_t volatile * const Dio_PortsDir[DIO_NUMBER_OF_PORTS] =
 {
-  (volatile TYPE*)DDRB,
+  (volatile uint8_t*)DDRA,
+  (volatile uint8_t*)DDRB,
+  (volatile uint8_t*)DDRC,
+  (volatile uint8_t*)DDRD
 };
 
 /**
 * Defines a table of pointers to the Port Data Output Register
 */
-static volatile TYPE* const Dio_PortsOut[DIO_NUMBER_OF_PORTS] =
+static uint8_t volatile * const Dio_PortsOut[DIO_NUMBER_OF_PORTS] =
 {
-  (volatile TYPE*)PORTB,
+  (volatile uint8_t*)PORTA,
+  (volatile uint8_t*)PORTB,
+  (volatile uint8_t*)PORTC,
+  (volatile uint8_t*)PORTD
 };
 /**********************************************************************
 * Function Definitions
@@ -67,22 +76,21 @@ static volatile TYPE* const Dio_PortsOut[DIO_NUMBER_OF_PORTS] =
 void 
 Dio_Init(const DioConfig_t * Config)
 {
-/* TODO: Define implementation */
-  uint16_t PortNumber = 0; // Port Number
-  uint16_t Position = 0; // Pin Number
+  uint8_t PortNumber = 0; // Port Number
+  uint8_t Position = 0; // Pin Number
 
   // Loop through all pins, set the data register bit and the data-direction
   // register bit according to the dio configuration table values
-  for (uint16_t Channel = 0; Channel < DIO_CHANNEL_MAX; Channel++)
+  for (uint8_t i = 0; i < DIO_CHANNEL_MAX; i++)
     {
-      PortNumber = Config[Channel].Channel / DIO_CHANNELS_PER_PORT;
-      Position = Config[Channel].Channel % DIO_CHANNELS_PER_PORT;
+      PortNumber = Config[i].Channel / DIO_CHANNELS_PER_PORT;
+      Position = Config[i].Channel % DIO_CHANNELS_PER_PORT;
 
-      if(Config[Channel].Direction == OUTPUT)
+      if(Config[i].Direction == DIO_DIR_OUTPUT)
         {
           *Dio_PortsDir[PortNumber] |= 1UL << Position;
 
-          if(Config[Channel].Data == HIGH)
+          if(Config[i].Data == DIO_STATE_HIGH)
             {
               *Dio_PortsOut[PortNumber] |= (1UL << Position);
             }
@@ -116,15 +124,15 @@ Dio_Init(const DioConfig_t * Config)
 * @endcode
 * @see Dio_Init
 **********************************************************************/
-DioState_t
+DioState_t 
 Dio_ChannelRead(DioChannel_t Channel)
 {
   /* Read the port associated with the desired pin */
-  DioState_trtState = (DioDioState_tPortsIn[Channel / DIO_CHANNELS_PER_PORT];
+  DioState_t PortState = (DioState_t)*Dio_PortsIn[Channel / DIO_CHANNELS_PER_PORT];
   /* Determine the port bit associated with this channel */
-  DioState_tnMask = (DioDioState_t<< (Channel % DIO_CHANNELS_PER_PORT));
+  DioState_t PinMask = (DioState_t)(1UL << (Channel % DIO_CHANNELS_PER_PORT));
   /* Mask the port state with the pin and return the DioPinState */
-  return ((PortState & PinMask) ? HIGH : LOW);
+  return ((PortState & PinMask) ? DIO_STATE_HIGH : DIO_STATE_LOW);
 }
 
 /**********************************************************************
@@ -133,13 +141,13 @@ Dio_ChannelRead(DioChannel_t Channel)
 * \b Description:
 * This function is used to write the state of a channel (pin) as either<br>
 * logic high or low through the use of the DioChannel_t enum to select<br>
-* the channel and the DioState_t define the desired state.<br>
+* the channel and the DioState_t to define the desired state.<br>
 * PRE-CONDITION: The channel is configured as OUTPUT <br>
 * PRE-CONDITION: The channel is configured as GPIO <br>
 * PRE-CONDITION: The channel is within the maximum DioChannel_t definition <br>
 * POST-CONDITION: The channel state will be State <br>
 * @param Channel is the pin to write using the DioChannel_t enum definition <br>
-* @param State is HIGH or LOW as defined in the DioState_tum <br>
+* @param State is HIGH or LOW as defined in the DioState_t enum <br>
 * @return void
 *
 * \b Example:
@@ -150,7 +158,7 @@ Dio_ChannelRead(DioChannel_t Channel)
 * @see Dio_Init
 **********************************************************************/
 void 
-Dio_ChannelWrite(DioChannel_t Channel, DioState_tate)
+Dio_ChannelWrite(DioChannel_t Channel, DioState_t State)
 {
   if (State == DIO_STATE_HIGH)
     {
@@ -183,7 +191,7 @@ Dio_SetChannelDirection(DioChannel_t Channel, DioDirection_t Direction)
 {
   uint16_t PortNumber = Channel / DIO_CHANNELS_PER_PORT;
   uint16_t Position = Channel % DIO_CHANNELS_PER_PORT;
-  if(Direction == OUTPUT)
+  if(Direction == DIO_DIR_OUTPUT)
     {
       *Dio_PortsDir[PortNumber] |= (1UL << Position);
     }
@@ -215,9 +223,13 @@ Dio_SetChannelDirection(DioChannel_t Channel, DioDirection_t Direction)
 * @endcode
 **********************************************************************/
 void 
-Dio_RegisterWrite(TYPE volatile * const Address, TYPE Value)
+Dio_RegisterWrite(uint8_t volatile * const Address, uint8_t Value)
 {
-  //TODO: Assert that this address is in range of Dio addresses
+  if(!(DIO_LOWER_BOUND_ADDRESS <= Address && Address <= DIO_UPPER_BOUND_ADDRESS)) 
+    {
+      //TODO: implement your error handling method
+      return 0x0;
+    }
   *Address = Value;
 }
 /**********************************************************************
@@ -240,10 +252,14 @@ Dio_RegisterWrite(TYPE volatile * const Address, TYPE Value)
 * DioValue = Dio_RegisterRead(VALID_DIO_ADDRESS);
 * @endcode
 **********************************************************************/
-const volatile TYPE 
-Dio_RegisterRead(const volatile TYPE * const Address)
+const volatile uint8_t 
+Dio_RegisterRead(const volatile uint8_t * const Address)
 {
-  //TODO: Assert that this address is in range of Dio addresses
+  if(!(DIO_LOWER_BOUND_ADDRESS <= Address && Address <= DIO_UPPER_BOUND_ADDRESS)) 
+    {
+      //TODO: implement your error handling method
+      return 0x0;
+    }
   return *Address;
 }
 

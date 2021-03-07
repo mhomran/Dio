@@ -28,8 +28,8 @@ void Dio_ChannelWrite(DioChannel_t Channel, DioState_t State);
 
 void Dio_SetChannelDirection(DioChannel_t Channel, DioDirection_t Direction);
 
-void Dio_RegisterWrite(TYPE volatile * const Address, TYPE Value);
-const volatile TYPE Dio_RegisterRead(const volatile TYPE * const Address);
+void Dio_RegisterWrite(uint8_t volatile * const Address, uint8_t Value);
+const volatile uint8_t Dio_RegisterRead(const volatile uint8_t * const Address);
 
 
 #ifdef __cplusplus

@@ -22,8 +22,38 @@
 */
 static const DioConfig_t DioConfig[] =
 {
-  //TODO: configure your pins
-  { PORTA_0, DIO_DIR_OUTPUT, DIO_STATE_LOW }
+  { PORTA_0, DIO_DIR_OUTPUT, DIO_STATE_LOW },
+  { PORTA_1, DIO_DIR_OUTPUT, DIO_STATE_LOW },
+  { PORTA_2, DIO_DIR_OUTPUT, DIO_STATE_LOW },
+  { PORTA_3, DIO_DIR_OUTPUT, DIO_STATE_LOW },
+  { PORTA_4, DIO_DIR_OUTPUT, DIO_STATE_LOW },
+  { PORTA_5, DIO_DIR_OUTPUT, DIO_STATE_LOW },
+  { PORTA_6, DIO_DIR_OUTPUT, DIO_STATE_LOW },
+  { PORTA_7, DIO_DIR_OUTPUT, DIO_STATE_LOW },
+  { PORTB_0, DIO_DIR_OUTPUT, DIO_STATE_LOW },
+  { PORTB_1, DIO_DIR_OUTPUT, DIO_STATE_LOW },
+  { PORTB_2, DIO_DIR_OUTPUT, DIO_STATE_LOW },
+  { PORTB_3, DIO_DIR_OUTPUT, DIO_STATE_LOW },
+  { PORTB_4, DIO_DIR_OUTPUT, DIO_STATE_LOW },
+  { PORTB_5, DIO_DIR_OUTPUT, DIO_STATE_LOW },
+  { PORTB_6, DIO_DIR_OUTPUT, DIO_STATE_LOW },
+  { PORTB_7, DIO_DIR_OUTPUT, DIO_STATE_LOW },
+  { PORTC_0, DIO_DIR_OUTPUT, DIO_STATE_LOW },
+  { PORTC_1, DIO_DIR_OUTPUT, DIO_STATE_LOW },
+  { PORTC_2, DIO_DIR_OUTPUT, DIO_STATE_LOW },
+  { PORTC_3, DIO_DIR_OUTPUT, DIO_STATE_LOW },
+  { PORTC_4, DIO_DIR_OUTPUT, DIO_STATE_LOW },
+  { PORTC_5, DIO_DIR_OUTPUT, DIO_STATE_LOW },
+  { PORTC_6, DIO_DIR_OUTPUT, DIO_STATE_LOW },
+  { PORTC_7, DIO_DIR_OUTPUT, DIO_STATE_LOW },
+  { PORTD_0, DIO_DIR_OUTPUT, DIO_STATE_LOW },
+  { PORTD_1, DIO_DIR_OUTPUT, DIO_STATE_LOW },
+  { PORTD_2, DIO_DIR_OUTPUT, DIO_STATE_LOW },
+  { PORTD_3, DIO_DIR_OUTPUT, DIO_STATE_LOW },
+  { PORTD_4, DIO_DIR_OUTPUT, DIO_STATE_LOW },
+  { PORTD_5, DIO_DIR_OUTPUT, DIO_STATE_LOW },
+  { PORTD_6, DIO_DIR_OUTPUT, DIO_STATE_LOW },
+  { PORTD_7, DIO_DIR_OUTPUT, DIO_STATE_LOW }
 };
 /**********************************************************************
 * Function Definitions
@@ -35,14 +65,13 @@ static const DioConfig_t DioConfig[] =
 * This function is used to get the cofiguration handle of the Dio <br>
 * POST-CONDITION: A constant pointer to the first member of the
 * configuration table will be returned. <br>
-* @return A pointer to the configuration table.
-*
 * \b Example Example:
 * @code
 * const Dio_ConfigType *DioConfig = Dio_GetConfig();
 * Dio_Init(DioConfig);
 * @endcode
 * @see Dio_Init
+* @return A pointer to the configuration table.
 **********************************************************************/
 const DioConfig_t * 
 Dio_ConfigGet(void)
